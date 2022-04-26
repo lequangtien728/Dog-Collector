@@ -3,8 +3,11 @@ from django.shortcuts import render
 # Create your views here.
 from django.http import HttpResponse
 from .models import Dog
+from django.views.generic.edit import CreateView
 
-
+class DogCreate(CreateView):
+    model = Dog
+    fields = '__all__'
 
 #Define the home view
 def home(request):
