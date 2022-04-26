@@ -4,6 +4,8 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Dog
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from .forms import FeedingForm
+
 
 class DogCreate(CreateView):
     model = Dog
@@ -30,4 +32,7 @@ def dogs_index(request):
 
 def dogs_detail(request, dog_id):
   dog = Dog.objects.get(id=dog_id)
-  return render (request, 'dogs/detail.html', {'dog': dog})
+  # create an instance of FeedingForm
+  feeding_form = FeedingForm()
+
+  return render (request, 'dogs/detail.html', {'dog': dog, 'feeding_form': feeding_form})
