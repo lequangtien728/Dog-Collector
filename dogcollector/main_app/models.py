@@ -1,6 +1,17 @@
 from django.db import models
 from django.urls import reverse
 
+#create many to many 
+class Toy(models.Model):
+  name = models.CharField(max_length=50)
+  color = models.CharField(max_length=20)
+
+  def __str__(self):
+    return self.name
+
+  def get_absolute_url(self):
+    return reverse('toys_detail', kwargs={'pk': self.id})
+
 # Create your models here.
 class Dog(models.Model):
     name = models.CharField(max_length=100)
@@ -41,3 +52,6 @@ class Feeding(models.Model):
   def __str__(self):
     # Nice method for obtaining the friendly value of a Field.choice
     return f"{self.get_meal_display()} on {self.date}"
+
+  class Meta:
+      ordering =['-date']

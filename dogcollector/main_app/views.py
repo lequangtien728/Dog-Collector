@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 # Create your views here.
 from django.http import HttpResponse
@@ -36,3 +36,16 @@ def dogs_detail(request, dog_id):
   feeding_form = FeedingForm()
 
   return render (request, 'dogs/detail.html', {'dog': dog, 'feeding_form': feeding_form})
+
+def add_feeding(request, dog_id):
+  # create a ModelForm instance using the data in request.POST
+  form = FeedingForm(request.POST)
+  # validate the form
+  if form.is_valid():
+    # don't save the form to the db until it
+    # has the cat_id assigned
+    new_feeding = form.save(commit=False)
+    new_feeding.dog_id = dog_id
+    new_feeding.save() # adds the feeding to the database, and the feeding be associated with the 
+  return redirect('detail', dog_id=dog_id)
+
