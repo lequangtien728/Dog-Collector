@@ -18,7 +18,7 @@ class DogCreate(CreateView):
 
 class DogUpdate(UpdateView):
     model = Dog
-    fields =['breed','description','age']
+    fields =['breed','description','age'] # because we don't want to let anyone change the dog name, we don't include in the fields.
 
 class DogDelete(DeleteView):
     model = Dog
@@ -32,9 +32,10 @@ def about(request):
     return render(request, 'about.html')
 
 def dogs_index(request):
-    dogs = Dog.objects.all()
+    dogs = Dog.objects.all() # using our model to get all the rows in our dog table in PSQL
     return render(request, 'dogs/index.html', {'dogs': dogs})
 
+# path('dogs/<int:dog_id>/' <- this is where dog_id comes from-
 def dogs_detail(request, dog_id):
   dog = Dog.objects.get(id=dog_id)
   # create an instance of FeedingForm
@@ -51,6 +52,12 @@ def add_feeding(request, dog_id):
     # has the cat_id assigned
     new_feeding = form.save(commit=False)
     new_feeding.dog_id = dog_id
-    new_feeding.save() # adds the feeding to the database, and the feeding be associated with the 
+    new_feeding.save() # adds the feeding to the database, and the feeding be associated with the dog
+    # with same id as the argument to the function dog_id 
   return redirect('detail', dog_id=dog_id)
 
+class ToyList(ListView):
+    model = Toy
+
+class ToyDetail(DetailView):
+    model = Toy
