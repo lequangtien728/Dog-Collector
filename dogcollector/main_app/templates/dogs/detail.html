@@ -45,6 +45,28 @@
     </table>
   </div>
 </div>
+
+<!-- Displaying a List of Associated Toys -->
+  <hr>
+  <div class="row">
+    <div class="col s6">
+      <h3>{{ dog.name }}'s Toys</h3>
+      {% if dog.toys.count %}
+        {% for dog in dog.toys.all %}
+          <div class="card">
+            <div class="card-content">
+              <span class="card-title">
+                A <span style="color: {{ toy.color }}">{{ toy.color }}</span> {{ toy.name }}
+              </span>
+            </div>
+          </div>
+        {% endfor %}
+      {% else %}
+        <h5>No Toys :(</h5>
+      {% endif %}
+    </div>
+    <!-- Available toys will come after this line -->
+  </div>
 <!-- Date picker -->
 <script>
   const dateEl = document.getElementById('id_date');

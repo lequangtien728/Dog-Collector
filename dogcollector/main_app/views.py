@@ -1,15 +1,20 @@
 from django.shortcuts import render, redirect
 
 # Create your views here.
-from django.http import HttpResponse
-from .models import Dog
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from .forms import FeedingForm
+from django.views.generic import ListView, DetailView
 
+from .forms import FeedingForm
+from django.http import HttpResponse # res.send in express
+from .models import Dog, Toy # importing our model
+
+# the template the CreateView and the UpdateView use is the same
+# templates/<app_name>/<model>_form.html
+# templates/main_app/cat_form.html
 
 class DogCreate(CreateView):
     model = Dog
-    fields = '__all__'
+    fields = '__all__' # this include all the fields (name, breed, description, age) on the Dog model in models.py
 
 class DogUpdate(UpdateView):
     model = Dog
