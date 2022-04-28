@@ -65,3 +65,7 @@ class ToyDetail(DetailView):
 class ToyCreate(CreateView):
     model = Toy
     fields = '__all__'
+
+class ToyUpdate(UpdateView):
+    model = Toy
+    fields = '__all__' #__all__ mean all the field in Toy model(name and color)
