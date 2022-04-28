@@ -38,6 +38,8 @@ def dogs_index(request):
 # path('dogs/<int:dog_id>/' <- this is where dog_id comes from-
 def dogs_detail(request, dog_id):
   dog = Dog.objects.get(id=dog_id)
+  # Get the toys the cat doesn't have
+  toys_dog_doesnt_have = Toy.objects.exclude(id__in = dog.toys.all().values_list('id'))
   # create an instance of FeedingForm
   feeding_form = FeedingForm()
 
@@ -73,3 +75,7 @@ class ToyUpdate(UpdateView):
 class ToyDelete(DeleteView):
     model = Toy
     success_url= '/toys/'
+
+def associate_toy(request, dog_id, toy_id):
+    Dog.objects.get(id=dog_id).toys.add(toy_id)#you can pass toy's id instead of whole object
+    return redirect('detail', cat_id=cat_id)
