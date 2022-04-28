@@ -14,7 +14,7 @@ from .models import Dog, Toy # importing our model
 
 class DogCreate(CreateView):
     model = Dog
-    fields = '__all__' # this include all the fields (name, breed, description, age) on the Dog model in models.py
+    fields = ['name','breed','description','age'] # this include all the fields (name, breed, description, age) on the Dog model in models.py
 
 class DogUpdate(UpdateView):
     model = Dog
