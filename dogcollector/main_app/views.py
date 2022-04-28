@@ -38,12 +38,12 @@ def dogs_index(request):
 # path('dogs/<int:dog_id>/' <- this is where dog_id comes from-
 def dogs_detail(request, dog_id):
   dog = Dog.objects.get(id=dog_id)
-  # Get the toys the cat doesn't have
+  # Get the toys the Dog doesn't have
   toys_dog_doesnt_have = Toy.objects.exclude(id__in = dog.toys.all().values_list('id'))
   # create an instance of FeedingForm
   feeding_form = FeedingForm()
 
-  return render (request, 'dogs/detail.html', {'dog': dog, 'feeding_form': feeding_form})
+  return render (request, 'dogs/detail.html', {'dog': dog, 'feeding_form': feeding_form,'toys':toys_dog_doesnt_have})
 
 def add_feeding(request, dog_id):
   # create a ModelForm instance using the data in request.POST
@@ -51,7 +51,7 @@ def add_feeding(request, dog_id):
   # validate the form
   if form.is_valid():
     # don't save the form to the db until it
-    # has the cat_id assigned
+    # has the Dog_id assigned
     new_feeding = form.save(commit=False)
     new_feeding.dog_id = dog_id
     new_feeding.save() # adds the feeding to the database, and the feeding be associated with the dog
@@ -78,4 +78,4 @@ class ToyDelete(DeleteView):
 
 def associate_toy(request, dog_id, toy_id):
     Dog.objects.get(id=dog_id).toys.add(toy_id)#you can pass toy's id instead of whole object
-    return redirect('detail', cat_id=cat_id)
+    return redirect('detail', dog_id=dog_id)
