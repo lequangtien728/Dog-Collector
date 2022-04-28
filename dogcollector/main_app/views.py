@@ -69,3 +69,7 @@ class ToyCreate(CreateView):
 class ToyUpdate(UpdateView):
     model = Toy
     fields = '__all__' #__all__ mean all the field in Toy model(name and color)
+
+class ToyDelete(DeleteView):
+    model = Toy
+    success_url= '/toys/'

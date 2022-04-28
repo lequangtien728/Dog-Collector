@@ -3,8 +3,8 @@ from django.urls import reverse
 
 #create many to many 
 class Toy(models.Model):
-  name = models.CharField(max_length=50)
-  color = models.CharField(max_length=20)
+  name = models.CharField(max_length=60)
+  color = models.CharField(max_length=30)
 
   def __str__(self):
     return self.name

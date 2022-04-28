@@ -11,8 +11,8 @@
         <p>Color: {{ toy.color }}</p>
       </div>
       <div class="card-action">
-        <a href="{% url 'toys_update' toy.id %}">Edit</a>
-        
+        <a href="{% url 'toys_update' toy.id %}">EDIT</a>
+        <a href="{% url 'toys_delete' toy.id %}">DELETE</a>
       </div>
     </div>
   </div>
