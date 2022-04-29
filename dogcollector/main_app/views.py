@@ -14,6 +14,10 @@ from .models import Dog, Toy, Photo # importing our model
 
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
+# Import the login_required decorator
+from django.contrib.auth.decorators import login_required
+# Import the mixin for class-based views
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 import uuid
 import boto3
@@ -39,7 +43,7 @@ def add_photo(request, dog_id):
             print('An error occurred uploading file to S3')
     return redirect('detail', dog_id=dog_id)
 
-class DogCreate(CreateView):
+class DogCreate(LoginRequiredMixin,CreateView):
     model = Dog
     fields = ['name','breed','description','age'] # this include all the fields (name, breed, description, age) on the Dog model in models.py
 
@@ -51,11 +55,11 @@ class DogCreate(CreateView):
         # Let the CreateView do its job as usual
         return super().form_valid(form)
 
-class DogUpdate(UpdateView):
+class DogUpdate(LoginRequiredMixin,UpdateView):
     model = Dog
     fields =['breed','description','age'] # because we don't want to let anyone change the dog name, we don't include in the fields.
 
-class DogDelete(DeleteView):
+class DogDelete(LoginRequiredMixin,DeleteView):
     model = Dog
     success_url = '/dogs/'
 
@@ -66,10 +70,11 @@ def home(request):
 def about(request):
     return render(request, 'about.html')
 
+@login_required
 def dogs_index(request):
     dogs = Dog.objects.filter(user=request.user) # using our model to get all the rows in our dog table in PSQL
-    # You could also retrieve the logged in user's cats like this
-    # cats = request.user.cat_set.all()
+    # You could also retrieve the logged in user's dogs like this
+    # dogs = request.user.dog_set.all()
     return render(request, 'dogs/index.html', {'dogs': dogs})
 
 # path('dogs/<int:dog_id>/' <- this is where dog_id comes from-
@@ -95,21 +100,21 @@ def add_feeding(request, dog_id):
     # with same id as the argument to the function dog_id 
   return redirect('detail', dog_id=dog_id)
 
-class ToyList(ListView):
+class ToyList(LoginRequiredMixin,ListView):
     model = Toy
 
-class ToyDetail(DetailView):
+class ToyDetail(LoginRequiredMixin,DetailView):
     model = Toy
 
-class ToyCreate(CreateView):
+class ToyCreate(LoginRequiredMixin,CreateView):
     model = Toy
     fields = '__all__'
 
-class ToyUpdate(UpdateView):
+class ToyUpdate(LoginRequiredMixin,UpdateView):
     model = Toy
     fields = '__all__' #__all__ mean all the field in Toy model(name and color)
 
-class ToyDelete(DeleteView):
+class ToyDelete(LoginRequiredMixin,DeleteView):
     model = Toy
     success_url= '/toys/'
 
