@@ -40,6 +40,14 @@ class DogCreate(CreateView):
     model = Dog
     fields = ['name','breed','description','age'] # this include all the fields (name, breed, description, age) on the Dog model in models.py
 
+    # This inherited method is called when a
+    # valid dog form is being submitted
+    def form_valid(self, form):
+        # Assign the logged in user (self.request.user)
+        form.instance.user = self.request.user  # form.instance is the dog
+        # Let the CreateView do its job as usual
+        return super().form_valid(form)
+
 class DogUpdate(UpdateView):
     model = Dog
     fields =['breed','description','age'] # because we don't want to let anyone change the dog name, we don't include in the fields.
