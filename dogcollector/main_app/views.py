@@ -6,11 +6,35 @@ from django.views.generic import ListView, DetailView
 
 from .forms import FeedingForm
 from django.http import HttpResponse # res.send in express
-from .models import Dog, Toy # importing our model
+from .models import Dog, Toy, Photo # importing our model
 
 # the template the CreateView and the UpdateView use is the same
 # templates/<app_name>/<model>_form.html
-# templates/main_app/cat_form.html
+# templates/main_app/dog_form.html
+
+import uuid
+import boto3
+# Add these "constant" variables below the imports
+S3_BASE_URL = 'https://s3-us-west-1.amazonaws.com/'
+BUCKET = 'dogcollector511'
+
+def add_photo(request, dog_id):
+    # photo-file will be the "name" attribute on the <input type="file">
+    photo_file = request.FILES.get('photo-file', None)
+    if photo_file:
+        s3 = boto3.client('s3')
+        # need a unique "key" for S3 / needs image file extension too
+        key = uuid.uuid4().hex[:6] + photo_file.name[photo_file.name.rfind('.'):]
+        # just in case something goes wrong
+        try:
+            s3.upload_fileobj(photo_file, BUCKET, key)
+            # build the full url string
+            url = f"{S3_BASE_URL}{BUCKET}/{key}"
+            # we can assign to dog_id or dog (if you have a dog object)
+            Photo.objects.create(url=url, dog_id=dog_id)
+        except:
+            print('An error occurred uploading file to S3')
+    return redirect('detail', dog_id=dog_id)
 
 class DogCreate(CreateView):
     model = Dog
