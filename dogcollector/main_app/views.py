@@ -12,6 +12,9 @@ from .models import Dog, Toy, Photo # importing our model
 # templates/<app_name>/<model>_form.html
 # templates/main_app/dog_form.html
 
+from django.contrib.auth import login
+from django.contrib.auth.forms import UserCreationForm
+
 import uuid
 import boto3
 # Add these "constant" variables below the imports
@@ -64,7 +67,9 @@ def about(request):
     return render(request, 'about.html')
 
 def dogs_index(request):
-    dogs = Dog.objects.all() # using our model to get all the rows in our dog table in PSQL
+    dogs = Dog.objects.filter(user=request.user) # using our model to get all the rows in our dog table in PSQL
+    # You could also retrieve the logged in user's cats like this
+    # cats = request.user.cat_set.all()
     return render(request, 'dogs/index.html', {'dogs': dogs})
 
 # path('dogs/<int:dog_id>/' <- this is where dog_id comes from-
@@ -111,3 +116,22 @@ class ToyDelete(DeleteView):
 def associate_toy(request, dog_id, toy_id):
     Dog.objects.get(id=dog_id).toys.add(toy_id)#you can pass toy's id instead of whole object
     return redirect('detail', dog_id=dog_id)
+
+def signup(request):
+  error_message = ''
+  if request.method == 'POST':
+    # This is how to create a 'user' form object
+    # that includes the data from the browser
+    form = UserCreationForm(request.POST)
+    if form.is_valid():
+      # This will add the user to the database
+      user = form.save()
+      # This is how we log a user in via code
+      login(request, user)
+      return redirect('index')
+    else:
+      error_message = 'Invalid sign up - try again'
+  # A bad POST or a GET request, so render signup.html with an empty form
+  form = UserCreationForm()
+  context = {'form': form, 'error_message': error_message}
+  return render(request, 'registration/signup.html', context)
