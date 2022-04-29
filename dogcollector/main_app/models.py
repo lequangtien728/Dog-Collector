@@ -1,5 +1,9 @@
 from django.db import models
 from django.urls import reverse
+from datetime import date
+
+#Import the User
+from django.contrib.auth.models import User
 
 #create many to many 
 class Toy(models.Model):
@@ -20,6 +24,9 @@ class Dog(models.Model):
     age = models.IntegerField()
     #add the M:M relationship 
     toys = models.ManyToManyField(Toy)
+
+    # Add the foreign key linking to a user instance
+    user = models.ForeignKey(User, on_delete=models.CASCADE) #linking dog to a User
     
     def __str__(self):
         return f"The Dog named {self.name} has id of {self.id}"

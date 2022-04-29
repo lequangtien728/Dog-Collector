@@ -33,7 +33,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'main_app',
     'django.contrib.admin',
-    'django.contrib.auth',
+    'django.contrib.auth',    #Django built-in authentication for user. Provided User Model with username, password, email, first_name, and last_name
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
