@@ -18,9 +18,12 @@ urlpatterns = [
     path('toys/create/', views.ToyCreate.as_view(), name = 'toys_create'),
     path('toys/<int:pk>/update/', views.ToyUpdate.as_view(), name='toys_update'),
     path('toys/<int:pk>/delete/', views.ToyDelete.as_view(), name='toys_delete'),
+    
     #asssociate a toy with a dog  (M:M)
     path('dogs/<int:dog_id>/associate_toy/<int:toy_id>/', views.associate_toy, name='associate_toy'),
-
+   
+    #add photo path
+    path('dogs/<int:dog_id>/add_photo/', views.add_photo, name='add_photo'),
 
 
 ]
