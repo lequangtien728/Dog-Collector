@@ -15,7 +15,7 @@ from .models import Dog, Toy, Photo # importing our model
 import uuid
 import boto3
 # Add these "constant" variables below the imports
-S3_BASE_URL = 'https://s3-us-west-1.amazonaws.com/'
+S3_BASE_URL = 'https://s3.us-east-1.amazonaws.com/'
 BUCKET = 'dogcollector511'
 
 def add_photo(request, dog_id):
